@@ -1,0 +1,116 @@
+{
+  "name": "merge-pdf",
+  "displayName": "merge-pdf",
+  "description": "merge pdf files and add bookmark",
+  "version": "0.0.1",
+  "publisher": "toramameseven",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.89.0"
+  },
+  "galleryBanner": {
+    "color": "#C80000",
+    "theme": "dark"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "pdf",
+    "merge",
+    "bookmark"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/toramameseven/pdf-merge.git"
+  },
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "merge-pdf.merge",
+        "title": "MergePdf:Merge"
+      },
+      {
+        "command": "merge-pdf.merge_no_bookmark",
+        "title": "MergePdf:Merge(no bookmark)"
+      },
+      {
+        "command": "merge-pdf.merge_abort",
+        "title": "MergePdf:abort"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "when": "resourceExtname =~ /\\.pdfm.*$/i && !pdf-merge.isRunning && pdf-merge.pdftk-exists",
+          "command": "merge-pdf.merge",
+          "group": "mergePdf@1"
+        },
+        {
+          "when": "resourceExtname =~ /\\.pdfm.*$/i && !pdf-merge.isRunning",
+          "command": "merge-pdf.merge_no_bookmark",
+          "group": "mergePdf@2"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "merge-pdf",
+      "properties": {
+        "merge-pdf.pdftk": {
+          "type": "string",
+          "default": "",
+          "description": "pdftk binary path. end with .exe",
+          "order": 1
+        },
+        "merge-pdf.pdftk-timeout": {
+          "type": "number",
+          "default": 60000,
+          "description": "pdftk timeout: ms",
+          "order": 2
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "pnpm run package",
+    "compile": "pnpm run check-types && pnpm run lint && node esbuild.js",
+    "watch": "npm-run-all -p watch:*",
+    "watch:esbuild": "node esbuild.js --watch",
+    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+    "package": "pnpm run check-types && pnpm run lint && node esbuild.js --production",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint src --ext ts",
+    "test": "vscode-test",
+    "vtest": "vitest",
+    "vscode:ls": "pnpx @vscode/vsce ls --no-dependencies",
+    "vscode:package": "pnpx @vscode/vsce package --no-dependencies",
+    "vscode:publish": "pnpx @vscode/vsce publish --no-dependencies"
+  },
+  "devDependencies": {
+    "@types/encoding-japanese": "^2.0.5",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "18.x",
+    "@types/vscode": "^1.89.0",
+    "@typescript-eslint/eslint-plugin": "^7.10.0",
+    "@typescript-eslint/parser": "^7.7.1",
+    "@vscode/test-cli": "^0.0.9",
+    "@vscode/test-electron": "^2.3.9",
+    "esbuild": "^0.20.2",
+    "eslint": "^8.57.0",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^5.4.5",
+    "vitest": "^1.6.0",
+    "eslint-plugin-unicorn": "^55.0.0"
+  },
+  "dependencies": {
+    "iconv-lite": "^0.6.3",
+    "pdf-lib": "^1.17.1"
+  }
+}
