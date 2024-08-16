@@ -1,11 +1,12 @@
 # merge-pdf README
 
-Visual Studio Code extension to easily merge pdf files. If you have the pdftk, you can add bookmark to a pdf file.
+Visual Studio Code extension to easily merge pdf files. If you have the [pdftk][pdftk], you can add bookmark to a pdf file.
 
 ## Features
 
 - Merge pdf files
 - Add bookmark(you need th pdftk)
+- For windows 10 and later.
 
 
 ## Usage
@@ -44,6 +45,7 @@ Visual Studio Code extension to easily merge pdf files. If you have the pdftk, y
 ### merge-pdf.pdftk
 
 - pdftk binary full path. end with .exe
+- example: `C:\Program Files (x86)\PDFtk Server\bin\pdftk.exe`
 
 ### merge-pdf.pdftk-timeout
 
@@ -54,4 +56,7 @@ Visual Studio Code extension to easily merge pdf files. If you have the pdftk, y
 ### 0.0.1
 
 first release.
+
+
+[pdftk]:https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/
 
