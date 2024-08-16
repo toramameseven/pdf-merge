@@ -138,8 +138,7 @@ async function mergePdfFromEditor(
 
   vscodeCommon.outputTab.show();
   vscodeCommon.showMessage(
-    MessageType.info,
-    `start merge pdfs ${bookmark}`,
+    MessageType.info, `===================> start merge pdfs ${bookmark}`,
     "main"
   );
   resetAbortController();
