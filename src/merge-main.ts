@@ -118,7 +118,7 @@ async function pdfAddBookmarkIfNeed(pdfAddBookmarkFullPath: string, tocFile: str
   const pdfToAddBookmark = path.resolve(workingFolder, pdfBeforeToc);
 
   if (await fileExists(pdfToAddBookmark) && await fileExists(tocFilePath)) {
-    await cmdSpawn(exe, [pdfToAddBookmark, "update_info_utf8", tocFile, "output", pdfAddBookmarkFullPath], workingFolder, timeout, ac, showMessage);
+    await cmdSpawn(exe, [pdfToAddBookmark, "update_info_utf8", tocFile, "output", pdfAddBookmarkFullPath], workingFolder, timeout, ac, "Add bookmark", showMessage);
   }
 
   await rmFileIfExist(tocFilePath, { force: true });

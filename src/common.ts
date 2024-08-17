@@ -56,7 +56,7 @@ export async function fileExists(filepath: string) {
     const p = await fs.promises.lstat(filepath);
     const result = p.isFile();
     return result;
-  } catch  {
+  } catch {
     return false;
   }
 }
@@ -118,13 +118,16 @@ export function cmdSpawn(
   cwd: string,
   timeout: number,
   ac: AbortController,
+  messageToDisplay: string,
   showMessage?: ShowMessage
 ) {
   return new Promise<number>(async (resolve, reject) => {
 
     const { signal } = ac;
 
-
+    if (messageToDisplay) {
+      showMessage?.(MessageType.info, messageToDisplay, "spawn");
+    }
     const p = spawn(command, [...param], {
       cwd,
       timeout: timeout ?? 60_000,
@@ -136,35 +139,35 @@ export function cmdSpawn(
       const r = s2u(data);
       r.split("\n")
         .filter((d: string) => d.trim())
-        .forEach((d: unknown) => showMessage?.(MessageType.info, d, "command"));
+        .forEach((d: unknown) => showMessage?.(MessageType.info, d, "spawn"));
     });
     //
     p.stderr.on("data", (data) => {
       const r = s2u(data as Buffer);
       r.split("\n")
         .filter((d: string) => d.trim())
-        .forEach((d: unknown) => showMessage?.(MessageType.err, d, "command"));
+        .forEach((d: unknown) => showMessage?.(MessageType.err, d, "spawn"));
     });
     //
     p.on("close", (r = 9999) => {
       if (r === 0) {
-        showMessage?.(MessageType.info, "complete!!", "command");
+        showMessage?.(MessageType.info, `${messageToDisplay} complete!!`, "spawn");
         return resolve(r);
       } else if (ac.signal.aborted) {
-        showMessage?.(MessageType.info, "convert is aborted.", "common");
+        showMessage?.(MessageType.info, `${messageToDisplay} aborted!!`, "spawn");
         return resolve(r ?? 9999);
       } else {
         showMessage?.(
           MessageType.err,
           `some error happens. code: ${r} killed? : ${p.killed}`,
-          "command"
+          "spawn"
         );
         return reject(r);
       }
     });
 
     const cleanup = () => {
-      showMessage?.(MessageType.info, `spawn kill pid: ${p.pid}`, "common");
+      showMessage?.(MessageType.info, `spawn kill pid: ${p.pid}`, "spawn");
       p.kill();
     };
 
